@@ -81,6 +81,14 @@ end
 [punish,add_time]=rotimepunish(n,R(j,:),solusion(j,:),D,EL,PTime);
 r=sum(punish);
 len(j)=len(j)+r*50+add_time;
+%add time requirement from last point to first point
+first_point=preorder(R(j,1));
+last_point=R(j,end);
+if last_point == 6|7
+    last_point = 1;
+end
+len(j)=len(j)+D(first_point,last_point);
+
 end
 %   ”¶÷µº∆À„
 [nx,ny]=size(R);
