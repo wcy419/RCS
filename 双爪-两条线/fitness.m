@@ -1,34 +1,38 @@
 function fit=fitness(D,chrom,ET,EL,n,nind)
 
 N=n;
+% chrom(1,:)=[5     6     2     7    12     9     8     4     3    10];
+chrom(1,:)=[3     8     4     7    10     5     6     2    12     9];
 R = ConvertToVRPSolution (n,chrom);
 workpoint=N;
-solusion = ones (nind, workpoint+12);
+% solusion = ones (nind, workpoint+12);
+solusion = R;
 preorder=[1 1 2 1 4 3 5];
 
 
-for j=1:nind
-    if R(j,1)==1
-        solusion(j,1) =1;
-        index=2;
-    else
-        solusion(j,1) =preorder(R(j,1));
-        solusion(j,2) =R(j,1);
-        index=3;
-    end
-for i =2 : workpoint
-%     if R(j,i) > R(j,i-1)
-        if preorder(R(j,i)) ==R(j,i-1)          %是否前序节点
-        solusion(j,index) =R(j,i);
-        index = index + 1;
-        else
-        solusion(j,index) = preorder(R(j,i));    %非前序节点则要机械臂要先移动到前序节点
-        index = index + 1;
-        solusion(j,index) =R(j,i);
-        index = index + 1;
-        end
-end
-end
+% for j=1:nind
+%     if R(j,1)==1
+%         solusion(j,1) =1;
+%         index=2;
+%     else
+%         solusion(j,1) =preorder(R(j,1));
+%         solusion(j,2) =R(j,1);
+%         index=3;
+%     end
+% for i =2 : workpoint
+% %     if R(j,i) > R(j,i-1)
+%         if preorder(R(j,i)) ==R(j,i-1)          %是否前序节点
+%         solusion(j,index) =R(j,i);
+%         index = index + 1;
+%         else
+%         solusion(j,index) = preorder(R(j,i));    %非前序节点则要机械臂要先移动到前序节点
+%         index = index + 1;
+%         solusion(j,index) =R(j,i);
+%         index = index + 1;
+%         end
+% end
+% end
+
 
 solusion(solusion==6)=1;
 solusion(solusion==7)=1;

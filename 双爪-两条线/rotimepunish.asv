@@ -74,10 +74,10 @@ T_45=RR(nn,:);
 % end
 % T_45(index) =nn;
 
-% %当5,6这种特殊情况时，直接将timing设为
-% if station1==station0+1
-%     timing(nn)=timing(nn)+ET(tt);
-% end
+%当5,6这种特殊情况时，直接将timing设为
+if station1==station0+1
+    timing(nn)=timing(nn)+ET(tt);
+end
 
 
 
@@ -174,15 +174,8 @@ for nn=1:n
     
     end   
 end
-sum_B = 0;
-for b=1:nn
-    if B(b) > 0
-    sum_B = sum_B+B(b);
-    end
-end
-% add_time=sum(B)+add; 
-% one bug hasn't been fixed because element of B will be lower than 0
-add_time=sum_B+add;
+
+add_time=sum(B)+add;
 
 
 
