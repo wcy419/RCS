@@ -8,6 +8,7 @@ ET=[0 0 30 0 80 0 30 0 80];
 %%%%%%%%%%%this update should be noticed and improved.
 
 afterorder=[0 0 4 0 10 0 8 0 12];%用为转换前的，避免出现2+、2-干扰的情况。
+afterorder=[0 0 2 0 10 0 8 0 12];
 % de=ones(1,length(R));
 % R=R-de;%1站是装载站，无时间窗限制，所以在这里忽略1，将所有站点-1
 % n=n-1;
@@ -74,10 +75,10 @@ T_45=RR(nn,:);
 % end
 % T_45(index) =nn;
 
-%当5,6这种特殊情况时，直接将timing设为
-if station1==station0+1
-    timing(nn)=timing(nn)+ET(tt);
-end
+% %当5,6这种特殊情况时，直接将timing设为
+% if station1==station0+1
+%     timing(nn)=timing(nn)+ET(tt);
+% end
 
 
 
@@ -174,8 +175,15 @@ for nn=1:n
     
     end   
 end
-
-add_time=sum(B)+add;
+sum_B = 0;
+for b=1:nn
+    if B(b) > 0
+    sum_B = sum_B+B(b);
+    end
+end
+% add_time=sum(B)+add; 
+% one bug hasn't been fixed because element of B will be lower than 0
+add_time=sum_B+add;
 
 
 

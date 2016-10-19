@@ -2,7 +2,7 @@ function fit=fitness(D,chrom,ET,EL,n,nind)
 
 N=n;
 % chrom(1,:)=[5     6     2     7    12     9     8     4     3    10];
-chrom(1,:)=[3     8     4     7    10     5     6     2    12     9];
+chrom(1,:)=[12     2    10     7     3     8     9     6     4     5];
 R = ConvertToVRPSolution (n,chrom);
 workpoint=N;
 % solusion = ones (nind, workpoint+12);
@@ -46,8 +46,9 @@ PTime=ET;
 
 for j=1:nind
 for i = 1 : numberofjourney
-     len(j) = len(j)+  D(solusion(j,i), solusion(j,i+1));
+     len(j) = len(j) +  D(solusion(j,i), solusion(j,i+1));
 end
+len(j) = len(j) + D(solusion(j,end), solusion(j,1)); %update; last point to first point 
 R_real=R;
 R_real(R_real==6)=1;
 R_real(R_real==7)=1;
