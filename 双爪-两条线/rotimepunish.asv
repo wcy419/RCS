@@ -8,7 +8,7 @@ ET=[0 0 30 0 80 0 30 0 80];
 %%%%%%%%%%%this update should be noticed and improved.
 
 afterorder=[0 0 4 0 10 0 8 0 12];%用为转换前的，避免出现2+、2-干扰的情况。
-afterorder=[0 0 2 0 10 0 8 0 12];
+afterorder=[0 0 2 0 4 0 6 0 8];
 % de=ones(1,length(R));
 % R=R-de;%1站是装载站，无时间窗限制，所以在这里忽略1，将所有站点-1
 % n=n-1;
@@ -89,7 +89,7 @@ T_45 = ConvertToVRPSolution (1,T_45);%转化为2+、2-解
 %在计算空载运行时，将6,7置为1
 T_45(T_45==6)=1;
 T_45(T_45==7)=1;
-for i = a(1) : b
+for i = a(1) : b-1
     timing(nn)=timing(nn)+D(T_45(i), T_45(i+1));
 %     timing(nn)=timing(nn)+waittime(T_45(i));
 end
@@ -184,6 +184,8 @@ end
 % add_time=sum(B)+add; 
 % one bug hasn't been fixed because element of B will be lower than 0
 add_time=sum_B+add;
+
+
 
 
 

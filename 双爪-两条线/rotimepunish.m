@@ -4,7 +4,7 @@ function [punish,add_time]=rotimepunish(N,R,solusion,D,EL,ET)
 preorder=[0 0 1 0 2 0 1 0 4 3 0 5];
 preorder=[0 0 1 0 2 0 1 0 6 4 0 8];
 tw=[3 5 7 9];%存储需要计算时间窗的工序
-ET=[0 0 30 0 80 0 30 0 80];
+ET=[0 0 30 0 45 0 45 0 45];
 %%%%%%%%%%%this update should be noticed and improved.
 
 afterorder=[0 0 4 0 10 0 8 0 12];%用为转换前的，避免出现2+、2-干扰的情况。
@@ -184,6 +184,9 @@ end
 % add_time=sum(B)+add; 
 % one bug hasn't been fixed because element of B will be lower than 0
 add_time=sum_B+add;
+
+feasible = isfeasible(R,n);
+add_time = add_time + 100*feasible;
 
 
 
