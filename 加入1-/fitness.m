@@ -7,10 +7,13 @@ function fit=fitness(D,chrom,ET,EL,n,nind)
 N=n;
 % chrom(1,:)=[5     6     2     7    12     9     8     4     3    10];
 % chrom(1,:)=[12     2    10     7     3     8     9     6     4     5];
+chrom(1,:)=[4 10 8 12 2 5 6 9 3 7];
 R = ConvertToVRPSolution (n,chrom);
 %将双爪操作序列的每个element转换为工站数。如[9 4 6 7 5 12 10 8 2 3]转换为[5 3 4 4 3 7 6 5 2 2]
 solusion = R;
-preorder=[1 1 2 1 4 3 5];%前序工站,i.e.工站3的前序工站preorder(3)=2
+
+plus = [3, 5, 7, 9];%当后序动作恰好在正后方时，用来加入等待时间（工位）
+ET=[0 0 30 0 45 0 30 0 45];
 
 solusion(solusion==6)=1;
 solusion(solusion==7)=1;%在两条线简化模型中, 6,7分别表示将两条线加工完成的工件放置在卸载站（1站）的动作。
@@ -23,9 +26,13 @@ for i = 1 : numberofjourney
      len(j) = len(j) +  D(solusion(j,i), solusion(j,i+1));
 end
 len(j) = len(j) + D(solusion(j,end), solusion(j,1)); %update; last point to first point 
-for i = 1 : N-1
-   if preorder(R(j,i+1))==R(j,i)
-       len(j)=len(j)+PTime(R(j,i));
+for i = 1 : size(plus,2)
+   position = find(chrom(j,:) == plus(i));
+   if position == N
+       position = 0;
+   end
+   if chrom(j,position+1) == plus(i)-1;
+       len(j)=len(j)+PTime(plus(i));
    end
 end
 [punish,add_time]=rotimepunish(n,chrom(j,:),solusion(j,:),D,EL,PTime);
