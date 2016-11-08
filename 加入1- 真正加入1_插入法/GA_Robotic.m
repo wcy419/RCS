@@ -11,10 +11,13 @@ function [R,minlen,length_ave,length_best]=GA_Robotic(D,C,n,N,Pc,Pm,EL,ET)
             minlenbefore=minlen;%上一代中目标函数最小值（用于与本代比较）
             len=fitness(D,farm,ET,EL,N,n);%计算第n代种群中每个染色体的目标函数值
             length_ave(counter+1)=mean(len);
-            length_best(counter+1)=min(len);
-            maxlen=max(len);
             minlen=min(len);
+            length_best(counter+1)=minlen;     
             rr=find(len==minlen);%返回的是在len中路径最短的路径坐标(i,1)
+            if minlen>minlenbefore
+                minlen = minlenbefore;
+                length_best(counter+1)=minlen;
+            end
             if minlen<minlenbefore
             R=farm(rr(1,1),:);%更新最短路径
             end

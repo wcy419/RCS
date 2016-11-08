@@ -1,5 +1,5 @@
 function [punish,add_time]=rotimepunish(N,R,solusion,D,EL,ET)
-
+N = size(R,2);
 tw=[3 5 7 9];%存储需要计算时间窗的工序（未转换前）
 ET=[0 0 30 0 45 0 30 0 45];%（时间窗）
 %%%%%%%%%%%this ET update should be noticed and improved.

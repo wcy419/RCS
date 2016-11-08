@@ -1,6 +1,5 @@
-function solusion = ConvertToVRPSolution (n,R1)
+function solusion = ConvertToVRPSolution (n,R)
 for j = 1 : n
-    R(j,:) = add_1minus(R1(j,:));
     workpoint = numel(R(j,:));
     
     for i = 1 : workpoint

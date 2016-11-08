@@ -7,8 +7,11 @@ function fit=fitness(D,chrom,ET,EL,n,nind)
 N=n;
 % chrom(1,:)=[5     6     2     7    12     9     8     4     3    10];
 % chrom(1,:)=[12     2    10     7     3     8     9     6     4     5];
-chrom(1,:)=[4 10 8 12 2 5 6 9 3 7];
-R = ConvertToVRPSolution (n,chrom);
+chrom(1,:)=[5    10     3     6     8    12     7     9     4     2];
+for j = 1 : n
+    R_1minus(j,:) = add_1minus(chrom(j,:));
+end
+R = ConvertToVRPSolution (n,R_1minus);
 %将双爪操作序列的每个element转换为工站数。如[9 4 6 7 5 12 10 8 2 3]转换为[5 3 4 4 3 7 6 5 2 2]
 solusion = R;
 
@@ -26,7 +29,7 @@ for i = 1 : numberofjourney
      len(j) = len(j) +  D(solusion(j,i), solusion(j,i+1));
 end
 len(j) = len(j) + D(solusion(j,end), solusion(j,1)); %update; last point to first point 
-for i = 1 : size(plus,2)
+                for i = 1 : size(plus,2)
    position = find(chrom(j,:) == plus(i));
    if position == N
        position = 0;
@@ -35,7 +38,7 @@ for i = 1 : size(plus,2)
        len(j)=len(j)+PTime(plus(i));
    end
 end
-[punish,add_time]=rotimepunish(n,chrom(j,:),solusion(j,:),D,EL,PTime);
+[punish,add_time]=rotimepunish(n,R_1minus(j,:),solusion(j,:),D,EL,PTime);
 %核心函数 计算该解序列是否满足时间窗约束以及可行性条件
 r=sum(punish);
 len(j)=len(j)+r*50+add_time;%对不满足时间窗约束的解，应当将其加上一定等待时间waittime使其满足时间窗。
