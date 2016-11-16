@@ -1,6 +1,6 @@
 nn=0;
 sum=0;
-iter=5;
+iter=10;
 min=999;
 for i=1:iter
 [length_best,Rlength]=mainRobotic;

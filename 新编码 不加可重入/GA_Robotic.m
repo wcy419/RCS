@@ -2,15 +2,14 @@
 %D是距离矩阵，n为种群个数、C为停止代数、m为适值淘汰加速指数、交叉概率Pc,变异概率Pm、R为最短路径,Rlength为路径长度
 function [R,minlen,length_ave,length_best]=GA_Robotic(D,C,n,N,Pc,Pm,EL,ET)
         farm=initpop(n,N);
-         
-        len_fitness=zeros(n,1);%存储适配值 
-        counter=0;
-        minlenbefore=200;
-        minlen=200;
+        len_fitness=zeros(n,1);%存储各个染色体的适应度值，用于染色体的优胜劣汰。
+        counter=0;%遗传次数
+        minlenbefore=300;
+        minlen=300;
         flagg=0;
         while counter<C
-            minlenbefore=minlen;
-            len=fitness(D,farm,ET,EL,N,n);
+            minlenbefore=minlen;%上一代中目标函数最小值（用于与本代比较）
+            len=fitness(D,farm,ET,EL,N,n);%计算第n代种群中每个染色体的目标函数值
             length_ave(counter+1)=mean(len);
             minlen=min(len);
             length_best(counter+1)=minlen;     
@@ -24,7 +23,6 @@ function [R,minlen,length_ave,length_best]=GA_Robotic(D,C,n,N,Pc,Pm,EL,ET)
             end
             FARM=farm;%优胜劣汰，nn记录了复制个数
 %选择  
-          K=1;
           [aa,bb]=size(FARM);
           FARM2=FARM;
           len2=len;
@@ -32,11 +30,12 @@ function [R,minlen,length_ave,length_best]=GA_Robotic(D,C,n,N,Pc,Pm,EL,ET)
           for i=1:aa
               tt= find(len2==len(1,i));
               FARM(i,:)=FARM2(tt(1,1),:);
-          end   
-          for i=1:K
-              j=aa+1-i;
-              FARM(j,:)=FARM(i,:);          
-          end
+          end   %竞标赛选择法，将各染色体按适应度值大小排序
+%           K=1;
+%           for i=1:K
+%               j=aa+1-i;
+%               FARM(j,:)=FARM(i,:);          
+%           end %把适应度最小的染色体用适应度最大的替代
 %交叉
               [aa,bb]=size(FARM);
                FARM2=FARM;
@@ -61,7 +60,7 @@ function [R,minlen,length_ave,length_best]=GA_Robotic(D,C,n,N,Pc,Pm,EL,ET)
             end
                clear FARM2
 %群体更新
-           FARM=[R;FARM];%将随机产生的n-aa个体加入从后面种群,将上次迭代的最优解从前面加入种群
+           FARM=[R;FARM];%将上次迭代的最优解从前面加入种群
            [aa,bb]=size(FARM);                                            
              %保持种群规模为n                                         
             if aa>n
@@ -69,8 +68,7 @@ function [R,minlen,length_ave,length_best]=GA_Robotic(D,C,n,N,Pc,Pm,EL,ET)
             end   
             farm=FARM; %更新farm
             clear FARM
-            counter=counter+1 ; %更新迭代次数
-            
+            counter=counter+1 ; %更新迭代次数            
             if minlenbefore==minlen
                 flagg=flagg+1;
             else
@@ -85,6 +83,4 @@ disp('近似最优解');
 disp(R);
 disp('近似最优解目标函数');
 disp(minlen);
-
-
         toc
