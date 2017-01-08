@@ -9,7 +9,7 @@ function [R,minlen,length_ave,length_best]=GA_Robotic(D,C,n,N,Pc,Pm,EL,ET)
         flagg=0;
         while counter<C
             minlenbefore=minlen;%上一代中目标函数最小值（用于与本代比较）
-            len=fitness(D,farm,ET,EL,N,n);%计算第n代种群中每个染色体的目标函数值
+            [len,farm]=fitness(D,farm,ET,EL,N,n);%计算第n代种群中每个染色体的目标函数值
             length_ave(counter+1)=mean(len);
             minlen=min(len);
             length_best(counter+1)=minlen;     

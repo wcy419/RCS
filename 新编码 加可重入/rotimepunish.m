@@ -1,7 +1,6 @@
 function [punish,add_time]=rotimepunish(N,R,solusion,D,EL,ET)
 N = size(R,2);
 tw=[3 5 7 11 13 15];%存储需要计算时间窗的工序（未转换前）
-ET=[0 0 30 0 45 0 10 0 0 0 30 0 45 0 10];%（时间窗）
 %%%%%%%%%%%this ET update should be noticed and improved.
 
 afterorder=[0 0 2 0 4 0 6 0 0 0 10 0 12 0 14];%后序工位（用于转换前的解，避免出现2+、2-干扰的情况）

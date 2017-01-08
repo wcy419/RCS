@@ -6,7 +6,7 @@ tic
 n=10;%n为种群个数
 C=400;%C为预设停止代数
 Pc=0.5;
-Pm=0.2;%交叉概率Pc，变异概率Pm 
+Pm=0.6;%交叉概率Pc，变异概率Pm 
 
 %robotic cell问题经典案例
 D = [0 6 10 6 10 
@@ -27,12 +27,12 @@ EL=[2000 2000 2000 2000 2000 2000 2000];%2000在这里代表无限大，即无时间窗
 %绘图
 
 
-% subplot(1,2,1); 
-% plot(length_ave);
-% title ('Plot of the average answer every generation');
-% xlabel ('Number of generation');
-% ylabel ('Object function value'); 
-subplot(1,1,1); 
+subplot(1,2,1); 
+plot(length_ave);
+title ('Plot of the average answer every generation');
+xlabel ('Number of generation');
+ylabel ('Object function value'); 
+subplot(1,2,2); 
 plot(length_best);
 title ('Plot of the best answer so far');
 xlabel ('Number of generation');

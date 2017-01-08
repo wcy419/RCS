@@ -1,4 +1,4 @@
-function fit=fitness(D,chrom,ET,EL,n,nind)
+function [fit,chrom]=fitness(D,chrom,ET,EL,n,nind)
 %这部分涉及到编码的部分请参考文献《Hybrid algorithm based scheduling optimization in robotic
 %cell with dual-gripper》
 
@@ -8,9 +8,18 @@ function fit=fitness(D,chrom,ET,EL,n,nind)
 %nind是种群个数
 N=n;%N是染色体序列长度
 % chrom(1,:)=[5    8     3     10     12    16     11     13     4     2];
-chrom(1,:)= [5  14   16    7     3     10     12    15     11     13  6   8     4     2];
+% chrom(1,:)= [5  14   16    7     3     10     12    15     11     13  6   8     4     2];
+ chrom(1,:)= [6     4     7     2     5    12    15    10    13    14    16     3     8    11];
+
 for j = 1 : nind
+    sizeR = size(chrom(j,:),2);
+    feasible = isfeasible(chrom(j,:),sizeR);
+        if feasible == 1
+            chrom(j,:) = Rreconstruct(chrom(j,:));
+        end
     R_1minus(j,:) = add_1minus(chrom(j,:));
+    feasible = isfeasible(R_1minus(j,:),sizeR+2);
+    
 end
 R = ConvertToVRPSolution (nind,R_1minus);
 %将双爪操作序列的每个element转换为工站数。如[9 4 6 7 5 12 10 8 2 3]转换为[5 3 4 4 3 7 6 5 2 2]
@@ -29,6 +38,7 @@ end
 numberofjourney = size(solusion,2)-1;
 len=zeros(nind,1);%机械臂移动路径总长度
 PTime=ET;
+q=0;
 
 solusion = stationconvert_timesum (nind,solusion);
 for j=1:nind
@@ -49,6 +59,15 @@ end
 %核心函数 计算该解序列是否满足时间窗约束以及可行性条件
 r=sum(punish);
 len(j)=len(j)+r*50+add_time;%对不满足时间窗约束的解，应当将其加上一定等待时间waittime使其满足时间窗。
+%     if add_time == 0
+%         q = q + 1;
+%         all_feasible = all_feasible + len(j);
+%     end
+%     if q ==0
+%         ave_feasible = 0;
+%     else
+%         ave_feasible = all_feasible/q;
+%     end
 end
 for i=1:nind
    fit(i)=len(i);% 适应值计算
