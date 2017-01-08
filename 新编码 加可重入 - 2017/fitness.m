@@ -9,7 +9,7 @@ function [fit,chrom]=fitness(D,chrom,ET,EL,n,nind)
 N=n;%N是染色体序列长度
 % chrom(1,:)=[5    8     3     10     12    16     11     13     4     2];
 % chrom(1,:)= [5  14   16    7     3     10     12    15     11     13  6   8     4     2];
-%  chrom(1,:)= [6     4     7     2     5    12    15    10    13    14    16     3     8    11];
+ chrom(1,:)= [6     4     7     2     5    12    15    10    13    14    16     3     8    11];
 
 for j = 1 : nind
     sizeR = size(chrom(j,:),2);
