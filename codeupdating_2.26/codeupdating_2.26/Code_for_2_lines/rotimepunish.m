@@ -1,4 +1,5 @@
 function [punish,add_time] = rotimepunish(N,R,solusion,D,EL,ET)
+R = [6 12 15 8 1 3 14 16 1 11 2 5 4 7 10 13];
 N = size(R,2);
 tw = [3 5 7 11 13 15];%存储需要计算时间窗的工序（未转换前）
 %%%%%%%%%%%this ET update should be noticed and improved.
@@ -58,16 +59,16 @@ if timing(nn) < ET(tt)  %若2+到2-之间的搬运时间小于工站2上工件的加工时间，则需等
 end
 end
 % [B,ind]=sort(waittime,'descend');
-[B,ind] = sort(waittime);
+[B,ind] = sort(waittime);%排序 并记录新序列B中对应的原序列位置（ind数组）用于一一对应
 BB = B;
 for nn = 1:n
     
     if B(nn) ~= 0
     j = 1;
-    position_0 = find(RR(ind(nn),:) == 0);  % 找到非零等时间对应序列的末尾后一位（第一个为零的元素的位置）
-    length_nn = position_0(1) - 2;
+    position_0 = find(RR(ind(nn),:) == 0);  % 找到非零等时间对应序列的末尾后一位（第一个为零的元素的位置），确定最后一个要查找的位置
+    length_nn = position_0(1) - 2;%可以插入的位置数。这里可能是position_0(1) - 1（即在最后一个位置插入等待时间t，到达该站后不操作，等待t后操作），有待斟酌
 %     priority = [];
-    priority = zeros(1,length_nn);
+    priority = zeros(1,length_nn);%看在哪个位置插入优先级高
     while RR(ind(nn),j+1)           
         p = 0;   
          for ii = 2:n %对RR（2:n,:）检查是否有重合区域，判断重合区域多少来决定在哪个位置加入等待时间（贪心策略）
@@ -92,7 +93,7 @@ for nn = 1:n
     for pp = 1:priority(cp)
         a = find(ind == B1(cp,pp));
         B(a) = B(a) - B(nn);
-%         pp = pp + 1;  %有问题？
+%         pp = pp + 1;  %这句语句无效，应删去
     end
     waittime(ind(nn)) = 0;
 %     if flag ~= 1  %flag前面似乎没有提及？
@@ -103,7 +104,7 @@ for nn = 1:n
 end
 sum_B = 0;
 for b = 1 : nn
-    if B(b) > 0
+    if B(b) > 0 %只计算B数组中>0的等待时间，（小于0说明该序列在其他序列加入等待时间后有冗余等待时间，不计入等待时间累积中）
     sum_B = sum_B + B(b);
     end
 end
